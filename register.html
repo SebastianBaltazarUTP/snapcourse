@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SnapCourse | Registro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <div id="app-container">
+        
+        <header class="auth-header">
+            <a href="index.html" class="back-btn">
+                <i data-lucide="arrow-left" color="#1A202C"></i>
+            </a>
+        </header>
+
+        <div class="scroll-content">
+            
+            <h2 class="auth-title">Crear Cuenta</h2>
+
+            <form class="auth-form" onsubmit="event.preventDefault(); window.location.href='proyectos.html'">
+                
+                <div class="input-group">
+                    <label>Nombre Completo</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="user" class="input-icon"></i>
+                        <input type="text" placeholder="Tu nombre completo" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Correo Electrónico</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="mail" class="input-icon"></i>
+                        <input type="email" placeholder="Tu@example.com" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="lock" class="input-icon"></i>
+                        <input type="password" placeholder="Mínimo 8 caracteres" required>
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">Acepto los <a href="#">Términos y Condiciones</a> y la Política de Privacidad</label>
+                </div>
+
+                <button type="submit" class="btn-primary">Registrarse</button>
+
+            </form>
+
+            <div class="divider">
+                <span>o</span>
+            </div>
+
+            <div class="social-buttons">
+                <button class="btn-social">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" width="20" alt="Google">
+                    Google
+                </button>
+                <button class="btn-social">
+                    <i data-lucide="apple" size="20" fill="black"></i>
+                    Apple
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

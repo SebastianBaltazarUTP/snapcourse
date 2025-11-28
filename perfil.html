@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div id="app-container">
+        <div class="scroll-content">
+            
+            <!-- Header -->
+            <div class="perfil-header">
+                <h1 style="margin:0; font-size:24px;">Mi Perfil</h1>
+                <!-- Botón Rueda Configuración -->
+                <button class="icon-btn-header" onclick="openSettings()">
+                    <i data-lucide="settings" size="24"></i>
+                </button>
+            </div>
+
+            <!-- Tarjeta Usuario -->
+            <div class="user-card">
+                <div class="avatar-circle">J</div>
+                <div class="user-info">
+                    <h3 id="profile-name-display">Hola, Jorge</h3>
+                    <p id="profile-email-display">Jorge23@gmail.com</p>
+                </div>
+                <!-- Botón Lápiz -->
+                <button class="edit-btn-mini" onclick="openEditName()">
+                    <i data-lucide="square-pen" size="20"></i>
+                </button>
+            </div>
+
+            <!-- Productividad -->
+            <div class="config-card">
+                <div class="card-header">
+                    <i data-lucide="bar-chart-2" color="#3341A2"></i> Tu Productividad
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <p><i data-lucide="video" size="14"></i> Proyectos</p>
+                        <strong id="stat-count">12</strong>
+                    </div>
+                    <div class="stat-box">
+                        <p><i data-lucide="clock" size="14"></i> Tiempo Ahorrado</p>
+                        <strong>4.2h</strong>
+                    </div>
+                    <div class="stat-box" style="grid-column: span 2;">
+                        <p><i data-lucide="pie-chart" size="14"></i> Minutos Generados</p>
+                        <strong>12.5m</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Almacenamiento -->
+            <div class="config-card">
+                <div class="storage-header">
+                    <div class="card-header" style="margin:0;"><i data-lucide="database"></i> Almacenamiento</div>
+                    <i data-lucide="server" size="16" color="#718096"></i>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 65%;"></div>
+                </div>
+                <p class="storage-text">6.5 GB de 10 GB usado</p>
+            </div>
+
+            <!-- Cerrar Sesión -->
+            <button class="btn-logout" onclick="window.location.href='index.html'">
+                <i data-lucide="log-out" size="16"></i> Cerrar Sesión
+            </button>
+
+        </div>
+
+        <!-- NAVBAR -->
+        <nav class="bottom-nav">
+            <a href="proyectos.html" class="nav-item"><i data-lucide="layout-grid"></i>Proyectos</a>
+            <a href="crear-paso1.html" class="nav-item"><i data-lucide="plus-square"></i>Crear</a>
+            <a href="perfil.html" class="nav-item active"><i data-lucide="user"></i>Perfil</a>
+            <a href="ayuda.html" class="nav-item"><i data-lucide="circle-help"></i>Ayuda</a>
+        </nav>
+
+        <!-- ================= MODALES ================= -->
+
+        <!-- 1. MODAL EDITAR NOMBRE (Bottom Sheet) -->
+        <div id="overlay-edit" class="modal-overlay" onclick="closeEditName(event)">
+            <div class="bottom-sheet" onclick="event.stopPropagation()"> <!-- Stop propagation para no cerrar al tocar el modal -->
+                <div class="sheet-header">
+                    <span class="sheet-title">Editar Nombre</span>
+                    <button onclick="closeEditName()" style="background:none; border:none;"><i data-lucide="x"></i></button>
+                </div>
+                
+                <div class="input-with-action">
+                    <input type="text" id="input-name-edit" value="Jorge">
+                    <span class="action-label" onclick="saveName()">Guardar</span>
+                </div>
+                <div style="height: 20px;"></div> <!-- Espaciador -->
+            </div>
+        </div>
+
+        <!-- 2. MODAL CONFIGURACIÓN (Full Screen) -->
+        <div id="modal-settings" class="full-modal">
+            <div class="sheet-header">
+                <h2 style="margin:0; text-align:left;">Configuración</h2>
+                <button onclick="closeSettings()" style="background:none; border:none;"><i data-lucide="x" size="24"></i></button>
+            </div>
+
+            <p style="font-size:13px; margin-top:10px; margin-bottom:5px;">Cambiar Contraseña</p>
+            <button class="btn-primary" style="height:45px; font-size:14px; margin-bottom:20px;">Cambiar Contraseña</button>
+
+            <p style="font-size:13px; color:#718096;">Mas Ajustes</p>
+            
+            <div class="config-list">
+                <div class="config-item">
+                    <div class="config-left">
+                        <i data-lucide="wand-2" size="20"></i>
+                        <div class="config-text">
+                            <h4>Ajustes de Creación</h4>
+                            <p>Define tus preferencias</p>
+                        </div>
+                    </div>
+                    <span style="font-size:12px; font-weight:600;">Ir</span>
+                </div>
+                <div class="config-item">
+                    <div class="config-left">
+                        <i data-lucide="sun" size="20"></i>
+                        <div class="config-text">
+                            <h4>Apariencia de la App</h4>
+                            <p>Elige el tema claro u oscuro</p>
+                        </div>
+                    </div>
+                    <span style="font-size:12px; font-weight:600;">Ir</span>
+                </div>
+                <div class="config-item">
+                    <div class="config-left">
+                        <i data-lucide="star" size="20"></i>
+                        <div class="config-text">
+                            <h4>Gestionar Suscripción</h4>
+                            <p>Consulta tu plan actual</p>
+                        </div>
+                    </div>
+                    <span style="font-size:12px; font-weight:600;">Ir</span>
+                </div>
+                <div class="config-item">
+                    <div class="config-left">
+                        <i data-lucide="shield" size="20"></i>
+                        <div class="config-text">
+                            <h4>Privacidad y Datos</h4>
+                            <p>Revisa nuestros términos</p>
+                        </div>
+                    </div>
+                    <span style="font-size:12px; font-weight:600;">Ir</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        lucide.createIcons();
+        
+        // Cargar datos al iniciar
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cargar nombre guardado
+            const savedName = localStorage.getItem('snap_username') || "Jorge";
+            document.getElementById('profile-name-display').innerText = "Hola, " + savedName;
+            document.getElementById('input-name-edit').value = savedName;
+            
+            // Cargar estadísticas (simulado desde app.js)
+            const projects = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            document.getElementById('stat-count').innerText = projects.length;
+        });
+
+        // --- LÓGICA MODAL EDITAR NOMBRE ---
+        function openEditName() {
+            document.getElementById('overlay-edit').classList.add('active');
+            document.querySelector('.bottom-sheet').classList.add('active');
+        }
+        
+        function closeEditName(e) {
+            // Si viene del evento click y no es el overlay, no cerramos (ya manejado por stopPropagation)
+            document.getElementById('overlay-edit').classList.remove('active');
+            document.querySelector('.bottom-sheet').classList.remove('active');
+        }
+
+        function saveName() {
+            const newName = document.getElementById('input-name-edit').value;
+            if(newName) {
+                localStorage.setItem('snap_username', newName);
+                document.getElementById('profile-name-display').innerText = "Hola, " + newName;
+                closeEditName();
+            }
+        }
+
+        // --- LÓGICA MODAL CONFIGURACIÓN ---
+        function openSettings() {
+            document.getElementById('modal-settings').classList.add('active');
+        }
+        
+        function closeSettings() {
+            document.getElementById('modal-settings').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

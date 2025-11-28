@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paso 1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div id="app-container">
+        <div class="scroll-content">
+            
+            <div class="stepper-container">
+                <div class="step-item active">
+                    <div class="step-circle">1</div>
+                    <span class="step-text">Subir</span>
+                </div>
+                <div class="step-divider"></div>
+                <div class="step-item">
+                    <div class="step-circle">2</div>
+                    <span class="step-text">Configurar</span>
+                </div>
+                <div class="step-divider"></div>
+                <div class="step-item">
+                    <div class="step-circle">3</div>
+                    <span class="step-text">Vista</span>
+                </div>
+            </div>
+
+            <h2>Sube tu material</h2>
+            <p class="subtitle">Elige cómo deseas agregar tu material educativo</p>
+
+            <div class="tabs-container">
+                <button class="tab-btn active" id="tab-pdf" onclick="toggleTab('pdf')">
+                    <i data-lucide="cloud-upload" size="18"></i> Subir PDF
+                </button>
+                <button class="tab-btn" id="tab-text" onclick="toggleTab('text')">
+                    <i data-lucide="clipboard" size="18"></i> Pegar Texto
+                </button>
+            </div>
+
+            <div id="area-pdf" class="upload-box">
+                <div class="icon-circle">
+                    <i data-lucide="upload-cloud" size="32" color="#3341A2"></i>
+                </div>
+                <h3 class="upload-text" style="font-size:15px; margin:0; margin-bottom:5px;">Arrastra tu archivo aquí</h3>
+                <p style="font-size:12px; color:#718096; margin:0; margin-bottom:20px;">PDF, PowerPoint y Word</p>
+                
+                <input type="file" id="file-input" hidden onchange="manejarSubidaArchivo(this)">
+                <button class="btn-small" onclick="document.getElementById('file-input').click()">Elegir Archivo</button>
+            </div>
+
+            <div id="area-text" style="display: none; margin-bottom: 30px;">
+                <textarea class="text-area-styled" placeholder="Pega aquí el contenido..."></textarea>
+            </div>
+
+            <div class="file-types">
+                <span><i data-lucide="file" size="12"></i> PDF</span>
+                <span><i data-lucide="monitor" size="12"></i> PPT</span>
+                <span><i data-lucide="file-text" size="12"></i> Word</span>
+            </div>
+
+            <div class="footer-nav">
+                <a href="crear-paso2.html" class="btn-main" style="opacity: 0.5; pointer-events: none;">Continuar →</a>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="proyectos.html" class="nav-item"><i data-lucide="layout-grid"></i>Proyectos</a>
+            <a href="crear-paso1.html" class="nav-item active"><i data-lucide="plus-square"></i>Crear</a>
+            <a href="perfil.html" class="nav-item"><i data-lucide="user"></i>Perfil</a>
+            <a href="ayuda.html" class="nav-item"><i data-lucide="circle-help"></i>Ayuda</a>
+        </nav>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        lucide.createIcons();
+        function toggleTab(t) {
+            if(t==='pdf'){
+                document.getElementById('area-pdf').style.display='flex';
+                document.getElementById('area-text').style.display='none';
+                document.getElementById('tab-pdf').classList.add('active');
+                document.getElementById('tab-text').classList.remove('active');
+            } else {
+                document.getElementById('area-pdf').style.display='none';
+                document.getElementById('area-text').style.display='block';
+                document.getElementById('tab-text').classList.add('active');
+                document.getElementById('tab-pdf').classList.remove('active');
+                
+                // Habilitar botón si se elige texto (para la demo)
+                const btn = document.querySelector('.btn-main');
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+            }
+        }
+    </script>
+</body>
+</html>

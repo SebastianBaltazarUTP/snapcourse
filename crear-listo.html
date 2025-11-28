@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div id="app-container">
+        <div class="scroll-content" style="text-align: center;">
+            
+            <div class="success-icon">
+                <i data-lucide="check" size="40"></i>
+            </div>
+
+            <h2 style="margin-bottom: 40px;">¡Tu microvideo está listo!</h2>
+
+            <!-- Descargar -->
+            <div class="final-card" style="text-align:left;">
+                <div class="group-header"><i data-lucide="code" size="18"></i> Descargar video</div>
+                <p class="group-desc" style="margin-bottom:15px;">Guarda en tu dispositivo</p>
+                <div class="download-grid">
+                    <div class="download-btn">
+                        <i data-lucide="download" size="20"></i>
+                        <strong>MP4</strong>
+                        <span>720p</span>
+                    </div>
+                    <div class="download-btn">
+                        <i data-lucide="download" size="20"></i>
+                        <strong>MP4</strong>
+                        <span>1080p</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compartir -->
+            <div class="final-card" style="text-align:left;">
+                <div class="group-header"><i data-lucide="share-2" size="18"></i> Compartir en redes</div>
+                <p class="group-desc">Publica directamente</p>
+                <div class="share-list">
+                    <button class="share-btn">
+                        <i data-lucide="youtube" color="red"></i> YouTube Shorts
+                    </button>
+                    <button class="share-btn">
+                        <i data-lucide="instagram" color="#C13584"></i> Instagram Reels
+                    </button>
+                    <button class="share-btn">
+                        <i data-lucide="linkedin" color="#0077b5"></i> LinkedIn
+                    </button>
+                </div>
+            </div>
+
+            <button class="btn-main" onclick="guardarProyectoFinal()" style="margin-top: 20px; height: 60px; font-size: 18px; width:100%;">
+                Guardar en Mis Proyectos
+            </button>
+
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="proyectos.html" class="nav-item"><i data-lucide="layout-grid"></i>Proyectos</a>
+            <a href="crear-paso1.html" class="nav-item active"><i data-lucide="plus-square"></i>Crear</a>
+            <a href="perfil.html" class="nav-item"><i data-lucide="user"></i>Perfil</a>
+            <a href="ayuda.html" class="nav-item"><i data-lucide="circle-help"></i>Ayuda</a>
+        </nav>
+    </div>
+    <script src="js/app.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

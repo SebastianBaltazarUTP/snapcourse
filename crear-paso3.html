@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paso 3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div id="app-container">
+        <div class="scroll-content">
+            
+            <div class="stepper-container">
+                <div class="step-item active"><div class="step-circle">✓</div></div>
+                <div class="step-divider"></div>
+                <div class="step-item active"><div class="step-circle">✓</div></div>
+                <div class="step-divider"></div>
+                <div class="step-item active">
+                    <div class="step-circle" style="background: #3341A2; color:white; border:none;">3</div>
+                    <span class="step-text" style="color: #1A202C; font-weight:700;">Vista previa</span>
+                </div>
+            </div>
+
+            <h2>Vista previa del microvideo</h2>
+            
+            <div class="video-container">
+                <p style="font-size:12px; font-weight:600; margin-bottom:10px;">Vista previa del video</p>
+                
+                <div class="video-box" style="position: relative; overflow: hidden; background: #F8FAFC;">
+                    
+                    <video id="preview-video" width="100%" height="100%" style="border-radius:12px; display:none; background:black;" controls>
+                        <source src="" type="video/mp4">
+                        Tu navegador no soporta video.
+                    </video>
+
+                    <div id="ai-loader" style="text-align:center; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div class="spinner" style="border: 4px solid rgba(51,65,162,0.1); border-top: 4px solid #3341A2; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px;"></div>
+                        <p id="ai-status" style="font-size:13px; color:#3341A2; font-weight:600;">Generando guion...</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="footer-nav">
+                <a href="crear-paso2.html" class="btn-back">← Atrás</a>
+                <a href="crear-listo.html" class="btn-main">Finalizar →</a>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="proyectos.html" class="nav-item"><i data-lucide="layout-grid"></i>Proyectos</a>
+            <a href="crear-paso1.html" class="nav-item active"><i data-lucide="plus-square"></i>Crear</a>
+            <a href="perfil.html" class="nav-item"><i data-lucide="user"></i>Perfil</a>
+            <a href="ayuda.html" class="nav-item"><i data-lucide="circle-help"></i>Ayuda</a>
+        </nav>
+    </div>
+
+    <style> @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } </style>
+
+    <script src="js/app.js"></script>
+    <script>
+        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => {
+            // Iniciar la simulación al cargar la página
+            cargarVistaPrevia();
+        });
+    </script>
+</body>
+</html>

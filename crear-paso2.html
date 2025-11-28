@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paso 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div id="app-container">
+        <div class="scroll-content">
+            
+            <div class="stepper-container">
+                <div class="step-item active"><div class="step-circle">✓</div></div>
+                <div class="step-divider"></div>
+                <div class="step-item active">
+                    <div class="step-circle" style="background: #3341A2; color:white; border:none;">2</div>
+                    <span class="step-text" style="color: #1A202C; font-weight:700;">Configurar</span>
+                </div>
+                <div class="step-divider"></div>
+                <div class="step-item"><div class="step-circle">3</div></div>
+            </div>
+
+            <h2>Personaliza tu microvideo</h2>
+            <p class="subtitle">Personaliza el estilo y la configuración</p>
+
+            <div class="config-group">
+                <div class="group-header"><i data-lucide="clock" size="18"></i> Duración del video</div>
+                <p class="group-desc">Elige la duración del video</p>
+                <div class="options-grid">
+                    <div class="option-card active">
+                        <span class="opt-big">30 s</span>
+                        <span class="opt-small">Vista rápida</span>
+                    </div>
+                    <div class="option-card">
+                        <span class="opt-big">60 s</span>
+                        <span class="opt-small">Equilibrado</span>
+                    </div>
+                    <div class="option-card">
+                        <span class="opt-big">90 s</span>
+                        <span class="opt-small">Detallado</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-group">
+                <div class="group-header"><i data-lucide="palette" size="18"></i> Estilo visual</div>
+                <p class="group-desc">Selecciona la estética</p>
+                <div class="options-grid">
+                    <div class="option-card">
+                        <div class="style-box classic"></div>
+                        <span class="label-style" style="font-size:12px; font-weight:600;">Clásico</span>
+                    </div>
+                    <div class="option-card active">
+                        <div class="style-box dynamic"></div>
+                        <span class="label-style" style="font-size:12px; font-weight:600;">Dinámico</span>
+                    </div>
+                    <div class="option-card">
+                        <div class="style-box minimal"></div>
+                        <span class="label-style" style="font-size:12px; font-weight:600;">Minimal</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:15px;">
+                    <i data-lucide="volume-2" size="20" color="#1A202C"></i> 
+                    <h4 style="margin:0; font-size:15px;">Audio y subtítulos</h4>
+                </div>
+                
+                <div class="toggle-item">
+                    <div class="toggle-info">
+                        <i data-lucide="mic" stroke-width="1.5"></i>
+                        <div class="toggle-texts">
+                            <strong>Voz automática</strong>
+                            <span>Voz generada por IA</span>
+                        </div>
+                    </div>
+                    <input type="checkbox" class="ios-switch" checked>
+                </div>
+
+                <div class="toggle-item">
+                    <div class="toggle-info">
+                        <i data-lucide="subtitles" stroke-width="1.5"></i> <div class="toggle-texts">
+                            <strong>Subtítulos</strong>
+                            <span>Mostrar subtítulos</span>
+                        </div>
+                    </div>
+                    <input type="checkbox" class="ios-switch" checked>
+                </div>
+            </div>
+
+            <div class="footer-nav">
+                <a href="crear-paso1.html" class="btn-back">← Atrás</a>
+                <a href="crear-paso3.html" class="btn-main">Generar video →</a>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="proyectos.html" class="nav-item"><i data-lucide="layout-grid"></i>Proyectos</a>
+            <a href="crear-paso1.html" class="nav-item active"><i data-lucide="plus-square"></i>Crear</a>
+            <a href="perfil.html" class="nav-item"><i data-lucide="user"></i>Perfil</a>
+            <a href="ayuda.html" class="nav-item"><i data-lucide="circle-help"></i>Ayuda</a>
+        </nav>
+    </div>
+    <script>
+        lucide.createIcons();
+        document.querySelectorAll('.option-card').forEach(c => {
+            c.addEventListener('click', function() {
+                this.parentElement.querySelectorAll('.option-card').forEach(s => s.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

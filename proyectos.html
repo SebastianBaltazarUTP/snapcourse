@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SnapCourse | Mis Proyectos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <div id="app-container">
+        
+        <div class="scroll-content" style="padding-bottom: 90px;">
+            
+            <h1 class="page-title">Mis Proyectos</h1>
+            <p class="page-subtitle">Gestiona tus microvideos educativos</p>
+
+            <div class="projects-grid" id="grid-proyectos">
+                
+                <div class="project-card" id="card-1">
+                    <div class="card-thumb">
+                        <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&auto=format&fit=crop&q=60" alt="React">
+                        <div class="thumb-overlay">
+                            <i data-lucide="play-circle" size="48" color="white" stroke-width="1.5"></i>
+                        </div>
+                        <button class="card-menu-btn" onclick="openSheet(event, 'card-1')">
+                            <i data-lucide="more-vertical" size="20"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Introducción a React Hooks</h3>
+                        <div class="card-meta">
+                            <div class="meta-item"><i data-lucide="clock" size="14"></i> 5:30</div>
+                            <div class="meta-item"><i data-lucide="calendar" size="14"></i> Hace 2 días</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" id="card-2">
+                    <div class="card-thumb">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=60" alt="Performance">
+                        <div class="thumb-overlay">
+                            <i data-lucide="play-circle" size="48" color="white" stroke-width="1.5"></i>
+                        </div>
+                        <button class="card-menu-btn" onclick="openSheet(event, 'card-2')">
+                            <i data-lucide="more-vertical" size="20"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Optimización Web Vitals</h3>
+                        <div class="card-meta">
+                            <div class="meta-item"><i data-lucide="clock" size="14"></i> 7:20</div>
+                            <div class="meta-item"><i data-lucide="calendar" size="14"></i> Hace 1 semana</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="proyectos.html" class="nav-item active">
+                <i data-lucide="layout-grid"></i>
+                <span>Proyectos</span>
+            </a>
+            
+            <a href="crear-paso1.html" class="nav-item">
+                <i data-lucide="plus-square"></i>
+                <span>Crear</span>
+            </a>
+            
+            <a href="perfil.html" class="nav-item">
+                <i data-lucide="user"></i>
+                <span>Perfil</span>
+            </a>
+            <a href="ayuda.html" class="nav-item">
+                <i data-lucide="circle-help"></i>
+                <span>Ayuda</span>
+            </a>
+        </nav>
+
+        <div id="sheet-overlay" class="sheet-overlay" onclick="closeSheet()"></div>
+        
+        <div id="action-sheet" class="action-sheet">
+            <div class="sheet-handle"></div>
+            
+            <button class="sheet-btn" onclick="handleAction('editar')">
+                <i data-lucide="pencil" size="20"></i> Editar
+            </button>
+            <button class="sheet-btn" onclick="handleAction('duplicar')">
+                <i data-lucide="copy" size="20"></i> Duplicar
+            </button>
+            <button class="sheet-btn" onclick="handleAction('compartir')">
+                <i data-lucide="share-2" size="20"></i> Compartir
+            </button>
+            <button class="sheet-btn" onclick="handleAction('descargar')">
+                <i data-lucide="download" size="20"></i> Descargar
+            </button>
+            <button class="sheet-btn btn-danger" onclick="handleAction('eliminar')">
+                <i data-lucide="trash-2" size="20"></i> Eliminar
+            </button>
+        </div>
+
+        <div id="success-modal" class="success-overlay">
+            <div class="success-box">
+                <div class="success-icon-circle">
+                    <i data-lucide="check" size="40" stroke-width="3"></i>
+                </div>
+                <p class="success-text">Eliminado con éxito!!!!</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/app.js"></script>
+
+    <script>
+        lucide.createIcons();
+        
+        // 1. DATOS INICIALES (Solo si es la primera vez que entras)
+        const datosIniciales = [
+            {
+                id: 'card-1',
+                titulo: 'Introducción a React Hooks',
+                hora: '5:30',
+                fecha: 'Hace 2 días',
+                img: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&auto=format&fit=crop&q=60',
+                alt: 'React'
+            },
+            {
+                id: 'card-2',
+                titulo: 'Optimización Web Vitals',
+                hora: '7:20',
+                fecha: 'Hace 1 semana',
+                img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=60',
+                alt: 'Performance'
+            }
+        ];
+
+        // Variable global para saber qué tarjeta estamos editando
+        let currentCardId = null; 
+
+        // --- AL CARGAR LA PÁGINA ---
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarProyectos();
+        });
+
+        // 2. FUNCIÓN PARA CARGAR Y PINTAR PROYECTOS
+        function cargarProyectos() {
+            const grid = document.getElementById('grid-proyectos');
+            
+            // Intentar leer del "Disco Duro" del navegador
+            let proyectosGuardados = JSON.parse(localStorage.getItem('mis_proyectos'));
+
+            // Si no hay nada guardado, usamos los datos iniciales
+            if (!proyectosGuardados || proyectosGuardados.length === 0) {
+                proyectosGuardados = datosIniciales;
+                localStorage.setItem('mis_proyectos', JSON.stringify(proyectosGuardados));
+            }
+
+            // Limpiar la pantalla antes de pintar
+            grid.innerHTML = '';
+
+            // Generar el HTML de cada tarjeta
+            proyectosGuardados.forEach(p => {
+                const cardHTML = `
+                <div class="project-card" id="${p.id}">
+                    <div class="card-thumb">
+                        <img src="${p.img}" alt="${p.alt}">
+                        <div class="thumb-overlay">
+                            <i data-lucide="play-circle" size="48" color="white" stroke-width="1.5"></i>
+                        </div>
+                        <button class="card-menu-btn" onclick="openSheet(event, '${p.id}')">
+                            <i data-lucide="more-vertical" size="20"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">${p.titulo}</h3>
+                        <div class="card-meta">
+                            <div class="meta-item"><i data-lucide="clock" size="14"></i> ${p.hora}</div>
+                            <div class="meta-item"><i data-lucide="calendar" size="14"></i> ${p.fecha}</div>
+                        </div>
+                    </div>
+                </div>`;
+                grid.innerHTML += cardHTML;
+            });
+
+            // Reactivar los iconos Lucide después de crear el HTML
+            lucide.createIcons();
+        }
+
+        // 3. ABRIR MENÚ
+        function openSheet(event, cardId) {
+            if(event) event.stopPropagation();
+            currentCardId = cardId; 
+            document.getElementById('sheet-overlay').classList.add('active');
+            document.getElementById('action-sheet').classList.add('active');
+        }
+
+        function closeSheet() {
+            document.getElementById('sheet-overlay').classList.remove('active');
+            document.getElementById('action-sheet').classList.remove('active');
+        }
+
+        // 4. MANEJADOR DE ACCIONES
+        function handleAction(action) {
+            closeSheet(); 
+
+            if (action === 'eliminar') {
+                setTimeout(eliminarProyecto, 300);
+            } 
+            else if (action === 'duplicar') {
+                setTimeout(duplicarProyecto, 300);
+            }
+        }
+
+        // --- LÓGICA DE ELIMINAR CON PERSISTENCIA ---
+        function eliminarProyecto() {
+            const modal = document.getElementById('success-modal');
+            
+            // Mostrar modal
+            modal.classList.add('active');
+
+            setTimeout(() => {
+                modal.classList.remove('active');
+                
+                // 1. Obtener lista actual
+                let proyectos = JSON.parse(localStorage.getItem('mis_proyectos'));
+                
+                // 2. Filtrar para quitar el que tenga el ID actual
+                proyectos = proyectos.filter(p => p.id !== currentCardId);
+                
+                // 3. Guardar la nueva lista
+                localStorage.setItem('mis_proyectos', JSON.stringify(proyectos));
+                
+                // 4. Repintar la pantalla
+                cargarProyectos();
+
+            }, 1500);
+        }
+
+        // --- LÓGICA DE DUPLICAR CON PERSISTENCIA ---
+        function duplicarProyecto() {
+            // 1. Obtener lista actual
+            let proyectos = JSON.parse(localStorage.getItem('mis_proyectos'));
+            
+            // 2. Encontrar el objeto original
+            const original = proyectos.find(p => p.id === currentCardId);
+            
+            if (original) {
+                // 3. Crear copia con nuevo ID
+                const nuevo = {
+                    ...original, // Copia todas las propiedades
+                    id: 'card-' + Date.now(), // ID único basado en la hora
+                    titulo: original.titulo + ' (Copia)'
+                };
+                
+                // 4. Insertar después del original o al inicio
+                proyectos.unshift(nuevo); // Lo pone al principio de la lista
+                
+                // 5. Guardar
+                localStorage.setItem('mis_proyectos', JSON.stringify(proyectos));
+                
+                // 6. Repintar
+                cargarProyectos();
+            }
+        }
+    </script>
+    
+</body>
+</html>

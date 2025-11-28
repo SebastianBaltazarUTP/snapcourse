@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Ayuda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div id="app-container">
+        <div class="scroll-content">
+            
+            <!-- Encabezado -->
+            <h1 style="margin-top:10px;">Centro de Ayuda</h1>
+            <p class="subtitle" style="text-align:left; margin-bottom:25px; padding:0;">Encuentra respuestas a tus preguntas</p>
+
+            <!-- Barra de Búsqueda -->
+            <div class="search-container">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" class="search-input" placeholder="">
+            </div>
+
+            <p style="font-size:14px; font-weight:600; margin-bottom:15px; color:var(--text-dark);">Preguntas Frecuentes</p>
+
+            <!-- Acordeón FAQ -->
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>¿Qué formatos de archivo son compatibles?</summary>
+                    <div class="faq-content">
+                        Soportamos archivos PDF, PowerPoint (.pptx) y documentos de Word (.docx) de hasta 50MB.
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>¿Cuál es la duración máxima de un microvideo?</summary>
+                    <div class="faq-content">
+                        Puedes crear videos de 30, 60 o 90 segundos dependiendo de la profundidad que necesites.
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>¿Puedo descargar mis microvideos?</summary>
+                    <div class="faq-content">
+                        Sí, una vez generados, puedes descargarlos en formato MP4 en calidad 720p o 1080p.
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>¿Hay límite de microvideos que puedo crear?</summary>
+                    <div class="faq-content">
+                        En el plan gratuito tienes 3 videos diarios. El plan Premium es ilimitado.
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>¿Cómo cambio mi contraseña?</summary>
+                    <div class="faq-content">
+                        Ve a la pestaña "Perfil", toca el icono de configuración (engranaje) y selecciona "Cambiar contraseña".
+                    </div>
+                </details>
+            </div>
+
+            <!-- Tarjeta de Consejos -->
+            <div class="tips-card">
+                <div class="tips-title">Consejos Rápidos</div>
+                <ul class="tips-list">
+                    <li>Usa contenido conciso para mejores resultados</li>
+                    <li>Los microvideos de 30-60 segundos tienen mayor engagement</li>
+                    <li>Activa los subtítulos para mejor accesibilidad</li>
+                </ul>
+            </div>
+
+            <!-- Sección de Contacto -->
+            <div class="contact-section">
+                <div class="contact-title">¿Necesitas más ayuda?</div>
+                <button class="btn-contact">Enviar Email a Soporte</button>
+                <button class="btn-contact" style="margin-bottom:0;">Chat en Vivo</button>
+            </div>
+
+        </div>
+
+        <!-- NAV BAR -->
+        <nav class="bottom-nav">
+            <a href="proyectos.html" class="nav-item"><i data-lucide="layout-grid"></i>Proyectos</a>
+            <a href="crear-paso1.html" class="nav-item"><i data-lucide="plus-square"></i>Crear</a>
+            <a href="perfil.html" class="nav-item"><i data-lucide="user"></i>Perfil</a>
+            <a href="ayuda.html" class="nav-item active"><i data-lucide="circle-help"></i>Ayuda</a>
+        </nav>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
