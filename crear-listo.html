@@ -18,36 +18,35 @@
 
             <h2 style="margin-bottom: 40px;">¡Tu microvideo está listo!</h2>
 
-            <!-- Descargar -->
             <div class="final-card" style="text-align:left;">
-                <div class="group-header"><i data-lucide="code" size="18"></i> Descargar video</div>
+                <div class="group-header"><i data-lucide="download" size="18"></i> Descargar video</div>
                 <p class="group-desc" style="margin-bottom:15px;">Guarda en tu dispositivo</p>
+                
                 <div class="download-grid">
-                    <div class="download-btn">
-                        <i data-lucide="download" size="20"></i>
+                    <div class="download-btn" onclick="simularDescarga('720p')">
+                        <i data-lucide="file-video" size="20"></i>
                         <strong>MP4</strong>
                         <span>720p</span>
                     </div>
-                    <div class="download-btn">
-                        <i data-lucide="download" size="20"></i>
+                    <div class="download-btn" onclick="simularDescarga('1080p')">
+                        <i data-lucide="file-video" size="20"></i>
                         <strong>MP4</strong>
                         <span>1080p</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Compartir -->
             <div class="final-card" style="text-align:left;">
                 <div class="group-header"><i data-lucide="share-2" size="18"></i> Compartir en redes</div>
                 <p class="group-desc">Publica directamente</p>
                 <div class="share-list">
-                    <button class="share-btn">
+                    <button class="share-btn" onclick="simularCompartir('YouTube Shorts')">
                         <i data-lucide="youtube" color="red"></i> YouTube Shorts
                     </button>
-                    <button class="share-btn">
+                    <button class="share-btn" onclick="simularCompartir('Instagram Reels')">
                         <i data-lucide="instagram" color="#C13584"></i> Instagram Reels
                     </button>
-                    <button class="share-btn">
+                    <button class="share-btn" onclick="simularCompartir('LinkedIn')">
                         <i data-lucide="linkedin" color="#0077b5"></i> LinkedIn
                     </button>
                 </div>
@@ -59,6 +58,19 @@
 
         </div>
 
+        <div id="download-modal" class="modal-overlay" style="align-items: center; justify-content: center; z-index: 3000;">
+            <div style="background: white; padding: 30px; border-radius: 24px; text-align: center; width: 220px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+                <div class="loader-spinner" style="margin: 0 auto 20px auto;"></div>
+                <h4 style="margin: 0; color: #1A202C; font-size: 16px; font-weight: 600;">Descargando...</h4>
+                <p style="margin: 5px 0 0 0; color: #718096; font-size: 12px;">Por favor espere</p>
+            </div>
+        </div>
+
+        <div id="app-toast" class="toast-notification">
+            <i data-lucide="check-circle" size="16" color="#48BB78"></i>
+            <span id="toast-message">Acción realizada</span>
+        </div>
+
         <nav class="bottom-nav">
             <a href="proyectos.html" class="nav-item"><i data-lucide="layout-grid"></i>Proyectos</a>
             <a href="crear-paso1.html" class="nav-item active"><i data-lucide="plus-square"></i>Crear</a>
@@ -66,7 +78,30 @@
             <a href="ayuda.html" class="nav-item"><i data-lucide="circle-help"></i>Ayuda</a>
         </nav>
     </div>
+
     <script src="js/app.js"></script>
-    <script>lucide.createIcons();</script>
+    <script>
+        lucide.createIcons();
+
+        // 1. Simulación de Descarga (Spinner)
+        function simularDescarga(calidad) {
+            const modal = document.getElementById('download-modal');
+            
+            // Mostrar modal
+            modal.classList.add('active');
+
+            // Esperar 2 segundos
+            setTimeout(() => {
+                modal.classList.remove('active');
+                // Mostrar mensaje de éxito usando la función de app.js
+                showToast(`Video ${calidad} guardado en galería`);
+            }, 2000);
+        }
+
+        // 2. Simulación de Compartir (Solo Toast)
+        function simularCompartir(red) {
+            showToast(`Abriendo ${red}...`);
+        }
+    </script>
 </body>
 </html>

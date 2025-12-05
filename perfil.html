@@ -23,7 +23,7 @@
 
             <!-- Tarjeta Usuario -->
             <div class="user-card">
-                <div class="avatar-circle">J</div>
+                <div class="avatar-circle" id="profile-avatar">J</div>
                 <div class="user-info">
                     <h3 id="profile-name-display">Hola, Jorge</h3>
                     <p id="profile-email-display">Jorge23@gmail.com</p>
@@ -162,15 +162,32 @@
     <script>
         lucide.createIcons();
         
-        // Cargar datos al iniciar
         document.addEventListener('DOMContentLoaded', () => {
-            // Cargar nombre guardado
-            const savedName = localStorage.getItem('snap_username') || "Jorge";
-            document.getElementById('profile-name-display').innerText = "Hola, " + savedName;
+            
+            // 1. Recuperar datos (Si no hay, usa "Invitado")
+            const savedName = localStorage.getItem('snap_username') || "Invitado";
+            const savedEmail = localStorage.getItem('snap_useremail') || "usuario@email.com";
+            
+            // 2. Mostrar Nombre y Correo
+            // Tomamos solo el primer nombre para el saludo (ej: "Hola, Alexis")
+            const firstName = savedName.split(" ")[0]; 
+            document.getElementById('profile-name-display').innerText = "Hola, " + firstName;
+            document.getElementById('profile-email-display').innerText = savedEmail;
+            
+            // --- NUEVO: ACTUALIZAR LA LETRA DEL CÍRCULO ---
+            // A) Limpiamos espacios, tomamos la 1ra letra y la hacemos mayúscula
+            const firstLetter = savedName.trim().charAt(0).toUpperCase();
+            
+            // B) La inyectamos en el círculo
+            document.getElementById('profile-avatar').innerText = firstLetter;
+
+            // ----------------------------------------------
+
+            // Actualizar input del modal de edición
             document.getElementById('input-name-edit').value = savedName;
             
-            // Cargar estadísticas (simulado desde app.js)
-            const projects = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            // Cargar estadística de proyectos
+            const projects = JSON.parse(localStorage.getItem('snapcourse_projects')) || [];
             document.getElementById('stat-count').innerText = projects.length;
         });
 
@@ -181,7 +198,6 @@
         }
         
         function closeEditName(e) {
-            // Si viene del evento click y no es el overlay, no cerramos (ya manejado por stopPropagation)
             document.getElementById('overlay-edit').classList.remove('active');
             document.querySelector('.bottom-sheet').classList.remove('active');
         }
@@ -189,13 +205,20 @@
         function saveName() {
             const newName = document.getElementById('input-name-edit').value;
             if(newName) {
+                // Guardar
                 localStorage.setItem('snap_username', newName);
-                document.getElementById('profile-name-display').innerText = "Hola, " + newName;
+                
+                // Actualizar textos en pantalla inmediatamente
+                const firstName = newName.split(" ")[0];
+                document.getElementById('profile-name-display').innerText = "Hola, " + firstName;
+                
+                // Actualizar letra del círculo inmediatamente
+                document.getElementById('profile-avatar').innerText = newName.trim().charAt(0).toUpperCase();
+                
                 closeEditName();
             }
         }
 
-        // --- LÓGICA MODAL CONFIGURACIÓN ---
         function openSettings() {
             document.getElementById('modal-settings').classList.add('active');
         }

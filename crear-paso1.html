@@ -32,15 +32,23 @@
             <h2>Sube tu material</h2>
             <p class="subtitle">Elige cómo deseas agregar tu material educativo</p>
 
-            <div class="tabs-container">
-                <button class="tab-btn active" id="tab-pdf" onclick="toggleTab('pdf')">
-                    <i data-lucide="cloud-upload" size="18"></i> Subir PDF
-                </button>
-                <button class="tab-btn" id="tab-text" onclick="toggleTab('text')">
-                    <i data-lucide="clipboard" size="18"></i> Pegar Texto
-                </button>
-            </div>
+           <div class="tabs-container" style="position: relative;">
+    
+    <button class="tab-btn active" id="tab-pdf" onclick="toggleTab('pdf')">
+        <i data-lucide="cloud-upload" size="18"></i> Subir PDF
+    </button>
+    
+    <button class="tab-btn" id="tab-text" onclick="toggleTab('text')">
+        <i data-lucide="clipboard" size="18"></i> Pegar Texto
+    </button>
 
+    <div id="paste-tooltip" class="coachmark-bubble">
+        <div class="coachmark-arrow"></div>
+        <span>¿Tienes solo texto? <strong>Haz clic aquí</strong></span>
+        <button onclick="cerrarTooltip(event)" style="background:none; border:none; color:white; margin-left:8px; cursor:pointer;">&times;</button>
+    </div>
+
+</div>
             <div id="area-pdf" class="upload-box">
                 <div class="icon-circle">
                     <i data-lucide="upload-cloud" size="32" color="#3341A2"></i>
@@ -53,8 +61,22 @@
             </div>
 
             <div id="area-text" style="display: none; margin-bottom: 30px;">
-                <textarea class="text-area-styled" placeholder="Pega aquí el contenido..."></textarea>
-            </div>
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <span style="font-size: 12px; color: #718096; font-weight: 500;">Contenido del video</span>
+        
+        <div style="display: flex; gap: 5px;">
+            <button onclick="ajustarTexto(-2)" style="width: 32px; height: 32px; border: 1px solid #E2E8F0; background: white; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="minus" size="14"></i>
+            </button>
+            <button onclick="ajustarTexto(2)" style="width: 32px; height: 32px; border: 1px solid #E2E8F0; background: white; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="plus" size="14"></i>
+            </button>
+        </div>
+    </div>
+
+    <textarea id="input-guion" class="text-area-styled" placeholder="Pega aquí el contenido de tus apuntes..." style="font-size: 15px; transition: font-size 0.2s;"></textarea>
+</div>
 
             <div class="file-types">
                 <span><i data-lucide="file" size="12"></i> PDF</span>
@@ -77,25 +99,51 @@
 
     <script src="js/app.js"></script>
     <script>
-        lucide.createIcons();
-        function toggleTab(t) {
-            if(t==='pdf'){
-                document.getElementById('area-pdf').style.display='flex';
-                document.getElementById('area-text').style.display='none';
-                document.getElementById('tab-pdf').classList.add('active');
-                document.getElementById('tab-text').classList.remove('active');
-            } else {
-                document.getElementById('area-pdf').style.display='none';
-                document.getElementById('area-text').style.display='block';
-                document.getElementById('tab-text').classList.add('active');
-                document.getElementById('tab-pdf').classList.remove('active');
-                
-                // Habilitar botón si se elige texto (para la demo)
-                const btn = document.querySelector('.btn-main');
+    lucide.createIcons(); // Inicializar iconos
+
+    // Lógica para el Tooltip: AHORA SIEMPRE APARECE
+    document.addEventListener("DOMContentLoaded", () => {
+        // Sin condición if (!visto)... simplemente lo mostramos siempre
+        setTimeout(() => {
+            const tooltip = document.getElementById("paste-tooltip");
+            if(tooltip) tooltip.classList.add("visible");
+        }, 1000); // Pequeña espera de 1 segundo para que se note la entrada
+    });
+
+    function cerrarTooltip(e) {
+        if(e) e.stopPropagation(); // Evitar click en el botón de abajo
+        const tooltip = document.getElementById("paste-tooltip");
+        if(tooltip) tooltip.classList.remove("visible");
+        // Ya no guardamos nada en localStorage, así al recargar volverá a salir
+    }
+
+    // Tu función original de tabs, manteniendo la mejora de cerrar el tooltip al usarlo
+    const originalToggle = window.toggleTab || function(){}; 
+    
+    window.toggleTab = function(t) {
+        if (t === 'text') {
+            cerrarTooltip(); // Si elige texto, cerramos el tooltip
+        }
+        // Ejecutar la lógica visual de cambio de tabs (definida en el head o app.js)
+        if(t==='pdf'){
+            document.getElementById('area-pdf').style.display='flex';
+            document.getElementById('area-text').style.display='none';
+            document.getElementById('tab-pdf').classList.add('active');
+            document.getElementById('tab-text').classList.remove('active');
+        } else {
+            document.getElementById('area-pdf').style.display='none';
+            document.getElementById('area-text').style.display='block';
+            document.getElementById('tab-text').classList.add('active');
+            document.getElementById('tab-pdf').classList.remove('active');
+            
+            // Habilitar botón continuar
+            const btn = document.querySelector('.btn-main');
+            if(btn) {
                 btn.style.opacity = '1';
                 btn.style.pointerEvents = 'auto';
             }
         }
-    </script>
+    }
+</script>
 </body>
 </html>

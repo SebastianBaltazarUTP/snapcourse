@@ -59,12 +59,51 @@
     <style> @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } </style>
 
     <script src="js/app.js"></script>
+    <script src="js/app.js"></script>
     <script>
         lucide.createIcons();
+
         document.addEventListener('DOMContentLoaded', () => {
-            // Iniciar la simulación al cargar la página
-            cargarVistaPrevia();
+            iniciarSimulacionIA();
         });
+
+        function iniciarSimulacionIA() {
+            const statusText = document.getElementById('ai-status');
+            const loaderContainer = document.getElementById('ai-loader');
+            const videoPreview = document.getElementById('preview-video');
+            
+            // Pasos de la simulación para dar feedback al usuario
+            const pasos = [
+                { texto: "Analizando tu contenido...", tiempo: 0 },
+                { texto: "Resumiendo conceptos clave...", tiempo: 1500 },
+                { texto: "Generando guion educativo...", tiempo: 3000 },
+                { texto: "Sintetizando voz neuronal...", tiempo: 4500 },
+                { texto: "Sincronizando subtítulos...", tiempo: 6000 }
+            ];
+
+            // Ejecutar cada paso
+            pasos.forEach(paso => {
+                setTimeout(() => {
+                    statusText.innerText = paso.texto;
+                    // Pequeña animación de pulso en el texto para que se vea vivo
+                    statusText.style.opacity = 0.5;
+                    setTimeout(() => statusText.style.opacity = 1, 300);
+                }, paso.tiempo);
+            });
+
+            // Finalizar carga después del último paso (aprox 7.5 segundos)
+            setTimeout(() => {
+                // 1. Ocultar loader
+                loaderContainer.style.display = 'none';
+                
+                // 2. Mostrar video
+                videoPreview.style.display = 'block';
+                
+                // 3. Auto-play (opcional, da sensación de inmediatez)
+                videoPreview.play();
+
+            }, 7500); 
+        }
     </script>
 </body>
 </html>

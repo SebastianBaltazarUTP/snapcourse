@@ -10,7 +10,7 @@
 </head>
 <body>
 
-    <div id="app-container">
+    <div id="app-container" class="animate-entry">
         
         <div class="scroll-content" style="padding-bottom: 90px;">
             
@@ -112,158 +112,245 @@
             </div>
         </div>
 
+        <div id="confirm-modal" class="modal-overlay" style="align-items: center; justify-content: center;">
+    <div style="background: white; padding: 25px; border-radius: 20px; width: 85%; max-width: 300px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+        <div style="width: 50px; height: 50px; background: #FEE2E2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto;">
+            <i data-lucide="alert-triangle" color="#DC2626" size="24"></i>
+        </div>
+        <h3 style="margin-bottom: 10px; color: #1A202C; font-size: 18px;">¿Eliminar proyecto?</h3>
+        <p style="color: #718096; font-size: 14px; margin-bottom: 25px;">Esta acción no se puede deshacer y perderás el video generado.</p>
+        
+        <div style="display: flex; gap: 10px;">
+            <button onclick="cerrarConfirmacion()" style="flex: 1; padding: 12px; background: #F3F4F6; border: none; border-radius: 10px; color: #4B5563; font-weight: 600; cursor: pointer;">Cancelar</button>
+            <button onclick="confirmarEliminacion()" style="flex: 1; padding: 12px; background: #DC2626; border: none; border-radius: 10px; color: white; font-weight: 600; cursor: pointer;">Eliminar</button>
+        </div>
+    </div>
+</div>
+
+<div id="share-modal" class="share-overlay" onclick="closeShare()">
+    <div class="snap-share-sheet" onclick="event.stopPropagation()">
+        
+        <div class="share-header-dark">
+            <div class="share-preview-icon-dark">
+                <i data-lucide="sparkles" size="28" color="var(--primary)"></i>
+            </div>
+            <div class="share-text-dark">
+                <h4 id="share-title">Proyecto Seleccionado</h4>
+                <p>Listo para difundir el conocimiento</p>
+            </div>
+            <button class="share-close-dark" onclick="closeShare()">
+                <i data-lucide="x" size="24"></i>
+            </button>
+        </div>
+
+        <div class="share-section-title">Redes Sociales</div>
+        <div class="share-scroll-row dark-scroll">
+            <div class="app-icon-item dark-item" onclick="simularEnvio('WhatsApp')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA">
+                <span>WhatsApp</span>
+            </div>
+            <div class="app-icon-item dark-item" onclick="simularEnvio('Instagram')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="IG">
+                <span>Instagram</span>
+            </div>
+            
+            <div class="app-icon-item dark-item" onclick="simularEnvio('Facebook')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="FB">
+                <span>Facebook</span>
+            </div>
+            <div class="app-icon-item dark-item" onclick="simularEnvio('X')">
+                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/X_logo_2023.svg" alt="X" style="background:white; padding:5px; border-radius:14px;">
+                 <span>X</span>
+             </div>
+        </div>
+
+        <div class="share-section-title" style="margin-top: 20px;">Google Workspace</div>
+        <div class="share-scroll-row dark-scroll">
+             
+            <div class="app-icon-item dark-item" onclick="simularEnvio('Drive')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Google_Drive_icon_%282020%29.svg" alt="Drive" style="background: white; border-radius: 14px; padding: 6px;">
+                <span>Drive</span>
+            </div>
+            <div class="app-icon-item dark-item" onclick="simularEnvio('Gmail')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" alt="Gmail" style="background: white; border-radius: 14px; padding: 6px;">
+                <span>Gmail</span>
+            </div>
+            <div class="app-icon-item dark-item" onclick="simularEnvio('YouTube')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YT">
+                <span>YouTube</span>
+            </div>
+        </div>
+
+        <div class="share-actions-list-dark">
+            <button class="snap-action-btn" onclick="copiarEnlace()">
+                <div class="btn-icon-wrapper"><i data-lucide="link" size="20"></i></div>
+                <span>Copiar enlace</span>
+            </button>
+        </div>
+
+    </div>
+</div>
+
+    <div id="download-modal" class="modal-overlay" style="align-items: center; justify-content: center; z-index: 3000;">
+    <div style="background: white; padding: 30px; border-radius: 24px; text-align: center; width: 220px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+        <div class="loader-spinner" style="margin: 0 auto 20px auto;"></div>
+        <h4 style="margin: 0; color: #1A202C; font-size: 16px; font-weight: 600;">Descargando...</h4>
+        <p style="margin: 5px 0 0 0; color: #718096; font-size: 12px;">Por favor espere</p>
+    </div>
+</div>
+
+<div id="app-toast" class="toast-notification">
+    <i data-lucide="check-circle" size="16" color="#48BB78"></i>
+    <span id="toast-message">Acción realizada</span>
+</div>
+
     </div>
 
     <script src="js/app.js"></script>
 
     <script>
         lucide.createIcons();
-        
-        // 1. DATOS INICIALES (Solo si es la primera vez que entras)
-        const datosIniciales = [
-            {
-                id: 'card-1',
-                titulo: 'Introducción a React Hooks',
-                hora: '5:30',
-                fecha: 'Hace 2 días',
-                img: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&auto=format&fit=crop&q=60',
-                alt: 'React'
-            },
-            {
-                id: 'card-2',
-                titulo: 'Optimización Web Vitals',
-                hora: '7:20',
-                fecha: 'Hace 1 semana',
-                img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=60',
-                alt: 'Performance'
-            }
-        ];
-
-        // Variable global para saber qué tarjeta estamos editando
+        const DB_KEY = 'snapcourse_projects'; 
         let currentCardId = null; 
 
-        // --- AL CARGAR LA PÁGINA ---
         document.addEventListener('DOMContentLoaded', () => {
             cargarProyectos();
         });
 
-        // 2. FUNCIÓN PARA CARGAR Y PINTAR PROYECTOS
+        // --- FUNCIÓN DE NOTIFICACIÓN (LA QUE FALTABA) ---
+        function showToast(mensaje) {
+            const toast = document.getElementById('app-toast');
+            const msg = document.getElementById('toast-message');
+            
+            if(toast && msg) {
+                msg.innerText = mensaje;
+                toast.classList.add('active');
+                setTimeout(() => {
+                    toast.classList.remove('active');
+                }, 3000);
+            } else {
+                // Respaldo por si olvidaste el HTML
+                alert(mensaje); 
+            }
+        }
+
+        // --- SIMULACIÓN DE DESCARGA ---
+        function iniciarDescarga() {
+            closeSheet();
+            closeShare();
+
+            // 1. Mostrar Spinner
+            const modal = document.getElementById('download-modal');
+            if(modal) modal.classList.add('active');
+
+            // 2. Esperar 2 segundos y mostrar Éxito
+            setTimeout(() => {
+                if(modal) modal.classList.remove('active');
+                showToast("¡Guardado en Galería!");
+            }, 2000);
+        }
+
+        // --- CARGAR PROYECTOS ---
         function cargarProyectos() {
             const grid = document.getElementById('grid-proyectos');
-            
-            // Intentar leer del "Disco Duro" del navegador
-            let proyectosGuardados = JSON.parse(localStorage.getItem('mis_proyectos'));
+            let proyectos = JSON.parse(localStorage.getItem(DB_KEY));
 
-            // Si no hay nada guardado, usamos los datos iniciales
-            if (!proyectosGuardados || proyectosGuardados.length === 0) {
-                proyectosGuardados = datosIniciales;
-                localStorage.setItem('mis_proyectos', JSON.stringify(proyectosGuardados));
+            if (!proyectos) {
+                const datosIniciales = [
+                    { id: 'demo_1', nombre: 'Historia del Arte', duracion: '5:30', fecha: 'Hace 2 días', thumbnail: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80' },
+                    { id: 'demo_2', nombre: 'Biología Celular', duracion: '7:20', fecha: 'Hace 1 semana', thumbnail: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&q=80' }
+                ];
+                localStorage.setItem(DB_KEY, JSON.stringify(datosIniciales));
+                proyectos = datosIniciales;
             }
 
-            // Limpiar la pantalla antes de pintar
             grid.innerHTML = '';
 
-            // Generar el HTML de cada tarjeta
-            proyectosGuardados.forEach(p => {
-                const cardHTML = `
-                <div class="project-card" id="${p.id}">
+            if (proyectos.length === 0) {
+                grid.innerHTML = `<div style="text-align:center; padding:50px 20px; opacity:0; animation:fadeIn 0.5s forwards;">
+                    <div style="margin-bottom:20px;"><i data-lucide="folder-open" size="32" color="#94A3B8"></i></div>
+                    <h3 style="color:#1A202C;">No hay proyectos</h3>
+                    <a href="crear-paso1.html" class="nav-item" style="background:var(--primary); color:white; padding:10px 20px; border-radius:12px; margin-top:15px; display:inline-block;">Crear video</a>
+                </div>`;
+                lucide.createIcons();
+                return;
+            }
+
+            proyectos.forEach(p => {
+                const titulo = p.nombre || p.titulo || 'Sin título';
+                const imagen = p.thumbnail || p.img || 'https://via.placeholder.com/300';
+                
+                grid.innerHTML += `
+                <div class="project-card" id="${p.id}"  style="cursor: pointer;">
                     <div class="card-thumb">
-                        <img src="${p.img}" alt="${p.alt}">
-                        <div class="thumb-overlay">
-                            <i data-lucide="play-circle" size="48" color="white" stroke-width="1.5"></i>
-                        </div>
-                        <button class="card-menu-btn" onclick="openSheet(event, '${p.id}')">
-                            <i data-lucide="more-vertical" size="20"></i>
-                        </button>
+                        <img src="${imagen}" style="width:100%; height:100%; object-fit:cover;">
+                        <div class="thumb-overlay"><i data-lucide="play-circle" size="48" color="white"></i></div>
+                        <button class="card-menu-btn" onclick="openSheet(event, '${p.id}')"><i data-lucide="more-vertical" size="20"></i></button>
                     </div>
                     <div class="card-body">
-                        <h3 class="card-title">${p.titulo}</h3>
+                        <h3 class="card-title">${titulo}</h3>
                         <div class="card-meta">
-                            <div class="meta-item"><i data-lucide="clock" size="14"></i> ${p.hora}</div>
+                            <div class="meta-item"><i data-lucide="clock" size="14"></i> ${p.duracion || p.hora}</div>
                             <div class="meta-item"><i data-lucide="calendar" size="14"></i> ${p.fecha}</div>
                         </div>
                     </div>
                 </div>`;
-                grid.innerHTML += cardHTML;
             });
-
-            // Reactivar los iconos Lucide después de crear el HTML
             lucide.createIcons();
         }
 
-        // 3. ABRIR MENÚ
-        function openSheet(event, cardId) {
-            if(event) event.stopPropagation();
-            currentCardId = cardId; 
-            document.getElementById('sheet-overlay').classList.add('active');
-            document.getElementById('action-sheet').classList.add('active');
+        // --- RESTO DE FUNCIONES ---
+        function verProyecto(id) {
+            localStorage.setItem('current_view_project_id', id);
+            window.location.href = 'ver-proyecto.html';
         }
 
-        function closeSheet() {
-            document.getElementById('sheet-overlay').classList.remove('active');
-            document.getElementById('action-sheet').classList.remove('active');
+        function openSheet(e, id) { if(e) e.stopPropagation(); currentCardId = id; document.getElementById('sheet-overlay').classList.add('active'); document.getElementById('action-sheet').classList.add('active'); }
+        function closeSheet() { document.getElementById('sheet-overlay').classList.remove('active'); document.getElementById('action-sheet').classList.remove('active'); }
+        
+        function abrirShareModal() {
+            const proyectos = JSON.parse(localStorage.getItem(DB_KEY)) || [];
+            const proyecto = proyectos.find(p => String(p.id) === String(currentCardId));
+            if(proyecto) document.getElementById('share-title').innerText = proyecto.nombre || proyecto.titulo;
+            document.getElementById('share-modal').classList.add('active');
+        }
+        function closeShare() { document.getElementById('share-modal').classList.remove('active'); }
+        function copiarEnlace() { closeShare(); showToast("Enlace copiado"); }
+        
+        function simularEnvio(app) {
+            if (app === 'Guardar') { iniciarDescarga(); } 
+            else { closeShare(); showToast(`Enviado a ${app}`); }
         }
 
-        // 4. MANEJADOR DE ACCIONES
         function handleAction(action) {
             closeSheet(); 
-
-            if (action === 'eliminar') {
-                setTimeout(eliminarProyecto, 300);
-            } 
-            else if (action === 'duplicar') {
-                setTimeout(duplicarProyecto, 300);
-            }
+            if (action === 'eliminar') document.getElementById('confirm-modal').classList.add('active');
+            else if (action === 'compartir') abrirShareModal();
+            else if (action === 'descargar') iniciarDescarga();
+            else if (action === 'duplicar') setTimeout(duplicarProyecto, 300);
         }
 
-        // --- LÓGICA DE ELIMINAR CON PERSISTENCIA ---
-        function eliminarProyecto() {
-            const modal = document.getElementById('success-modal');
-            
-            // Mostrar modal
-            modal.classList.add('active');
-
+        function cerrarConfirmacion() { document.getElementById('confirm-modal').classList.remove('active'); }
+        function confirmarEliminacion() {
+            cerrarConfirmacion();
+            const modalExito = document.getElementById('success-modal');
+            modalExito.classList.add('active');
             setTimeout(() => {
-                modal.classList.remove('active');
-                
-                // 1. Obtener lista actual
-                let proyectos = JSON.parse(localStorage.getItem('mis_proyectos'));
-                
-                // 2. Filtrar para quitar el que tenga el ID actual
-                proyectos = proyectos.filter(p => p.id !== currentCardId);
-                
-                // 3. Guardar la nueva lista
-                localStorage.setItem('mis_proyectos', JSON.stringify(proyectos));
-                
-                // 4. Repintar la pantalla
+                modalExito.classList.remove('active');
+                let proyectos = JSON.parse(localStorage.getItem(DB_KEY));
+                proyectos = proyectos.filter(p => String(p.id) !== String(currentCardId));
+                localStorage.setItem(DB_KEY, JSON.stringify(proyectos));
                 cargarProyectos();
-
-            }, 1500);
+            }, 1000);
         }
 
-        // --- LÓGICA DE DUPLICAR CON PERSISTENCIA ---
         function duplicarProyecto() {
-            // 1. Obtener lista actual
-            let proyectos = JSON.parse(localStorage.getItem('mis_proyectos'));
-            
-            // 2. Encontrar el objeto original
-            const original = proyectos.find(p => p.id === currentCardId);
-            
+            let proyectos = JSON.parse(localStorage.getItem(DB_KEY));
+            const original = proyectos.find(p => String(p.id) === String(currentCardId));
             if (original) {
-                // 3. Crear copia con nuevo ID
-                const nuevo = {
-                    ...original, // Copia todas las propiedades
-                    id: 'card-' + Date.now(), // ID único basado en la hora
-                    titulo: original.titulo + ' (Copia)'
-                };
-                
-                // 4. Insertar después del original o al inicio
-                proyectos.unshift(nuevo); // Lo pone al principio de la lista
-                
-                // 5. Guardar
-                localStorage.setItem('mis_proyectos', JSON.stringify(proyectos));
-                
-                // 6. Repintar
+                const nuevo = { ...original, id: 'card-' + Date.now(), nombre: (original.nombre || original.titulo) + ' (Copia)' };
+                proyectos.unshift(nuevo);
+                localStorage.setItem(DB_KEY, JSON.stringify(proyectos));
                 cargarProyectos();
             }
         }

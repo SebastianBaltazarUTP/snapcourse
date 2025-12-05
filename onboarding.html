@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bienvenido a SnapCourse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <div id="app-container">
+        <div class="screen onboarding-screen">
+            
+            <div class="onboarding-header">
+                <button class="btn-skip" onclick="irAlDashboard()">Saltar</button>
+            </div>
+
+            <div class="slides-wrapper">
+                
+                <div class="slide active" id="slide-1">
+                    <div class="slide-image">
+                        <i data-lucide="file-text" size="80" color="#3341A2"></i>
+                    </div>
+                    <h2>Sube tu material</h2>
+                    <p>Carga tus apuntes en PDF, PowerPoint o simplemente pega el texto de tu clase.</p>
+                </div>
+
+                <div class="slide" id="slide-2">
+                    <div class="slide-image">
+                        <i data-lucide="wand-2" size="80" color="#3341A2"></i>
+                    </div>
+                    <h2>La IA hace la magia</h2>
+                    <p>Nuestra tecnología resume, estructura y narra el contenido por ti en segundos.</p>
+                </div>
+
+                <div class="slide" id="slide-3">
+                    <div class="slide-image">
+                        <i data-lucide="play-circle" size="80" color="#3341A2"></i>
+                    </div>
+                    <h2>Aprende al instante</h2>
+                    <p>Obtén microvideos listos para ver, repasar y compartir con tus compañeros.</p>
+                </div>
+
+            </div>
+
+            <div class="onboarding-footer">
+                <div class="dots-container">
+                    <span class="dot active" id="dot-1"></span>
+                    <span class="dot" id="dot-2"></span>
+                    <span class="dot" id="dot-3"></span>
+                </div>
+
+                <button class="btn-primary" id="btn-next" onclick="siguienteSlide()">Siguiente</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        let currentSlide = 1;
+        const totalSlides = 3;
+
+        function siguienteSlide() {
+            if (currentSlide < totalSlides) {
+                // 1. Ocultar actual
+                document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+                document.getElementById(`dot-${currentSlide}`).classList.remove('active');
+                
+                // 2. Avanzar contador
+                currentSlide++;
+                
+                // 3. Mostrar siguiente
+                document.getElementById(`slide-${currentSlide}`).classList.add('active');
+                document.getElementById(`dot-${currentSlide}`).classList.add('active');
+
+                // 4. Si llegamos al último, cambiar texto del botón
+                if (currentSlide === totalSlides) {
+                    document.getElementById('btn-next').innerText = "Empezar";
+                }
+            } else {
+                // Si ya estamos en el último y dan clic, ir al dashboard
+                irAlDashboard();
+            }
+        }
+
+        function irAlDashboard() {
+            window.location.href = 'proyectos.html';
+        }
+    </script>
+</body>
+</html>
