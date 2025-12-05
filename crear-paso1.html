@@ -32,23 +32,21 @@
             <h2>Sube tu material</h2>
             <p class="subtitle">Elige cómo deseas agregar tu material educativo</p>
 
-           <div class="tabs-container" style="position: relative;">
-    
-    <button class="tab-btn active" id="tab-pdf" onclick="toggleTab('pdf')">
-        <i data-lucide="cloud-upload" size="18"></i> Subir PDF
-    </button>
-    
-    <button class="tab-btn" id="tab-text" onclick="toggleTab('text')">
-        <i data-lucide="clipboard" size="18"></i> Pegar Texto
-    </button>
+            <div class="tabs-container" style="position: relative;">
+                <button class="tab-btn active" id="tab-pdf" onclick="cambiarTab('pdf')">
+                    <i data-lucide="cloud-upload" size="18"></i> Subir PDF
+                </button>
+                <button class="tab-btn" id="tab-text" onclick="cambiarTab('text')">
+                    <i data-lucide="clipboard" size="18"></i> Pegar Texto
+                </button>
 
-    <div id="paste-tooltip" class="coachmark-bubble">
-        <div class="coachmark-arrow"></div>
-        <span>¿Tienes solo texto? <strong>Haz clic aquí</strong></span>
-        <button onclick="cerrarTooltip(event)" style="background:none; border:none; color:white; margin-left:8px; cursor:pointer;">&times;</button>
-    </div>
+                <div id="paste-tooltip" class="coachmark-bubble">
+                    <div class="coachmark-arrow"></div>
+                    <span>¿Tienes solo texto? <strong>Haz clic aquí</strong></span>
+                    <button onclick="cerrarTooltip(event)" style="background:none; border:none; color:white; margin-left:8px; cursor:pointer;">&times;</button>
+                </div>
+            </div>
 
-</div>
             <div id="area-pdf" class="upload-box">
                 <div class="icon-circle">
                     <i data-lucide="upload-cloud" size="32" color="#3341A2"></i>
@@ -56,27 +54,26 @@
                 <h3 class="upload-text" style="font-size:15px; margin:0; margin-bottom:5px;">Arrastra tu archivo aquí</h3>
                 <p style="font-size:12px; color:#718096; margin:0; margin-bottom:20px;">PDF, PowerPoint y Word</p>
                 
-                <input type="file" id="file-input" hidden onchange="manejarSubidaArchivo(this)">
+                <input type="file" id="file-input" hidden onchange="manejarArchivoLocal(this)">
                 <button class="btn-small" onclick="document.getElementById('file-input').click()">Elegir Archivo</button>
             </div>
 
             <div id="area-text" style="display: none; margin-bottom: 30px;">
-    
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-        <span style="font-size: 12px; color: #718096; font-weight: 500;">Contenido del video</span>
-        
-        <div style="display: flex; gap: 5px;">
-            <button onclick="ajustarTexto(-2)" style="width: 32px; height: 32px; border: 1px solid #E2E8F0; background: white; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                <i data-lucide="minus" size="14"></i>
-            </button>
-            <button onclick="ajustarTexto(2)" style="width: 32px; height: 32px; border: 1px solid #E2E8F0; background: white; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                <i data-lucide="plus" size="14"></i>
-            </button>
-        </div>
-    </div>
-
-    <textarea id="input-guion" class="text-area-styled" placeholder="Pega aquí el contenido de tus apuntes..." style="font-size: 15px; transition: font-size 0.2s;"></textarea>
-</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-size: 12px; color: #718096; font-weight: 500;">Contenido del video</span>
+                    <div style="display: flex; gap: 5px;">
+                        <button onclick="zoomTexto(-2)" style="width: 32px; height: 32px; border: 1px solid #E2E8F0; background: white; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                            <i data-lucide="minus" size="14"></i>
+                        </button>
+                        <button onclick="zoomTexto(2)" style="width: 32px; height: 32px; border: 1px solid #E2E8F0; background: white; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                            <i data-lucide="plus" size="14"></i>
+                        </button>
+                    </div>
+                </div>
+                <textarea id="input-guion" class="text-area-styled" placeholder="Pega aquí el contenido de tus apuntes..." 
+                          style="font-size: 15px; transition: font-size 0.2s;"
+                          oninput="validarEscritura(this)"></textarea>
+            </div>
 
             <div class="file-types">
                 <span><i data-lucide="file" size="12"></i> PDF</span>
@@ -85,7 +82,9 @@
             </div>
 
             <div class="footer-nav">
-                <a href="crear-paso2.html" class="btn-main" style="opacity: 0.5; pointer-events: none;">Continuar →</a>
+                <a href="javascript:void(0)" class="btn-main" id="btn-continuar" 
+                   onclick="guardarYContinuar()" 
+                   style="opacity: 0.5; pointer-events: none;">Continuar →</a>
             </div>
         </div>
 
@@ -97,53 +96,131 @@
         </nav>
     </div>
 
-    <script src="js/app.js"></script>
     <script>
-    lucide.createIcons(); // Inicializar iconos
+        lucide.createIcons();
+        const TEMP_KEY = 'snapcourse_temp_project';
 
-    // Lógica para el Tooltip: AHORA SIEMPRE APARECE
-    document.addEventListener("DOMContentLoaded", () => {
-        // Sin condición if (!visto)... simplemente lo mostramos siempre
-        setTimeout(() => {
+        // 1. TOOLTIP (Coach Mark)
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                const tooltip = document.getElementById("paste-tooltip");
+                if(tooltip) tooltip.classList.add("visible");
+            }, 1000);
+        });
+
+        function cerrarTooltip(e) {
+            if(e) e.stopPropagation(); 
             const tooltip = document.getElementById("paste-tooltip");
-            if(tooltip) tooltip.classList.add("visible");
-        }, 1000); // Pequeña espera de 1 segundo para que se note la entrada
-    });
-
-    function cerrarTooltip(e) {
-        if(e) e.stopPropagation(); // Evitar click en el botón de abajo
-        const tooltip = document.getElementById("paste-tooltip");
-        if(tooltip) tooltip.classList.remove("visible");
-        // Ya no guardamos nada en localStorage, así al recargar volverá a salir
-    }
-
-    // Tu función original de tabs, manteniendo la mejora de cerrar el tooltip al usarlo
-    const originalToggle = window.toggleTab || function(){}; 
-    
-    window.toggleTab = function(t) {
-        if (t === 'text') {
-            cerrarTooltip(); // Si elige texto, cerramos el tooltip
+            if(tooltip) tooltip.classList.remove("visible");
         }
-        // Ejecutar la lógica visual de cambio de tabs (definida en el head o app.js)
-        if(t==='pdf'){
-            document.getElementById('area-pdf').style.display='flex';
-            document.getElementById('area-text').style.display='none';
-            document.getElementById('tab-pdf').classList.add('active');
-            document.getElementById('tab-text').classList.remove('active');
-        } else {
-            document.getElementById('area-pdf').style.display='none';
-            document.getElementById('area-text').style.display='block';
-            document.getElementById('tab-text').classList.add('active');
-            document.getElementById('tab-pdf').classList.remove('active');
-            
-            // Habilitar botón continuar
-            const btn = document.querySelector('.btn-main');
-            if(btn) {
-                btn.style.opacity = '1';
-                btn.style.pointerEvents = 'auto';
+
+        // 2. LÓGICA DE TABS
+        function cambiarTab(modo) {
+            const btnContinuar = document.getElementById('btn-continuar');
+            const textArea = document.getElementById('input-guion');
+
+            if (modo === 'text') {
+                cerrarTooltip();
+                document.getElementById('area-pdf').style.display = 'none';
+                document.getElementById('area-text').style.display = 'block';
+                document.getElementById('tab-text').classList.add('active');
+                document.getElementById('tab-pdf').classList.remove('active');
+                
+                // Validar si ya hay texto para habilitar botón
+                if (textArea.value.trim().length > 0) {
+                    activarBoton(true);
+                } else {
+                    activarBoton(false);
+                }
+            } else {
+                document.getElementById('area-pdf').style.display = 'flex';
+                document.getElementById('area-text').style.display = 'none';
+                document.getElementById('tab-pdf').classList.add('active');
+                document.getElementById('tab-text').classList.remove('active');
+                // En PDF simulamos que siempre está listo o esperando archivo
+                // Para la demo, lo dejamos desactivado hasta subir archivo
+                activarBoton(false); 
             }
         }
-    }
-</script>
+
+        // 3. VALIDACIÓN DE ESCRITURA
+        function validarEscritura(textarea) {
+            if (textarea.value.trim().length > 0) {
+                activarBoton(true);
+            } else {
+                activarBoton(false);
+            }
+        }
+
+        function activarBoton(activo) {
+            const btn = document.getElementById('btn-continuar');
+            if (activo) {
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+            } else {
+                btn.style.opacity = '0.5';
+                btn.style.pointerEvents = 'none';
+            }
+        }
+
+        // 4. ZOOM TEXTO
+        function zoomTexto(delta) {
+            const txt = document.getElementById('input-guion');
+            let size = parseInt(window.getComputedStyle(txt).fontSize);
+            let newSize = size + delta;
+            if(newSize >= 12 && newSize <= 24) txt.style.fontSize = newSize + 'px';
+        }
+
+        // 5. MANEJO DE ARCHIVO PDF (Simulación)
+        function manejarArchivoLocal(input) {
+            if (input.files && input.files[0]) {
+                const nombre = input.files[0].name;
+                guardarEnMemoria(nombre);
+                
+                // Feedback visual
+                const uploadText = document.querySelector('.upload-text');
+                if(uploadText) uploadText.innerHTML = `Archivo:<br><span style="color:#3341A2">${nombre}</span>`;
+                activarBoton(true);
+            }
+        }
+
+        // 6. GUARDAR Y CONTINUAR (LA PARTE CLAVE)
+        function guardarYContinuar() {
+            const tabText = document.getElementById('tab-text');
+            let tituloProyecto = "Nuevo Proyecto";
+
+            // Si estamos en la pestaña de texto
+            if (tabText.classList.contains('active')) {
+                const contenido = document.getElementById('input-guion').value;
+                // Usar las primeras 4 palabras como título
+                if (contenido.trim().length > 0) {
+                    tituloProyecto = contenido.split(' ').slice(0, 4).join(' ') + "...";
+                }
+            } else {
+                // Si estamos en PDF, el título ya se guardó en manejarArchivoLocal o usamos default
+                // Pero por seguridad lo volvemos a intentar leer
+                const temp = JSON.parse(sessionStorage.getItem(TEMP_KEY));
+                if(temp) tituloProyecto = temp.nombre;
+            }
+
+            // Guardamos finalmente
+            guardarEnMemoria(tituloProyecto);
+            
+            // Navegamos
+            window.location.href = 'crear-paso2.html';
+        }
+
+        function guardarEnMemoria(nombre) {
+            const proyectoTemp = {
+                id: 'proj_' + Date.now(),
+                nombre: nombre,
+                fecha: 'Hace un momento',
+                duracion: '0:45', 
+                estilo: 'Clásico',
+                thumbnail: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&q=80'
+            };
+            sessionStorage.setItem(TEMP_KEY, JSON.stringify(proyectoTemp));
+        }
+    </script>
 </body>
 </html>
